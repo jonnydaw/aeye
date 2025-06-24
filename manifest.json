@@ -1,0 +1,25 @@
+{
+    "name": "AEye Describe",
+    "description": "Image Describer",
+    "version": "1.0",
+    "manifest_version": 3,
+    "permissions": ["activeTab", "scripting", "storage", "tabs","http://localhost:3000/"],
+    "optional_permissions": ["accessibilityFeatures.read"],
+    "action": {
+        "default_popup": "extension/home/home.html",
+        "default_icon": "extension/aeye.png"
+    },
+
+    "background": {
+        "service_worker": "extension/dist/js/service/service.js",
+        "type": "module"
+
+    },
+    "content_scripts": [
+        {
+        "js": ["extension/dist/js/scripts/script.js"],
+        "matches": ["<all_urls>"],
+        "run_at": "document_idle"
+        }
+    ]
+}
