@@ -3,10 +3,11 @@
     "description": "Image Describer",
     "version": "1.0",
     "manifest_version": 3,
-    "permissions": ["activeTab", "scripting", "storage", "tabs","http://localhost:3000/"],
+    "permissions": ["activeTab", "scripting", "storage", "tabs"],
     "optional_permissions": ["accessibilityFeatures.read"],
+    "host_permissions": ["http://localhost:3000/*"],
     "action": {
-        "default_popup": "extension/home/home.html",
+        "default_popup": "extension/dist/home/home.html",
         "default_icon": "extension/aeye.png"
     },
 

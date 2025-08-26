@@ -1,12 +1,26 @@
 "use strict";
 let activeImg = null;
-document.addEventListener('focusin', (e) => {
-    let active = document.activeElement;
-    let parent = active === null || active === void 0 ? void 0 : active.parentElement;
-    if (parent) {
-        const source = extractImgSrcFromHTMLCollection(parent.children);
-        if (source) {
-            activeImg = source;
+function hi() {
+    console.log("hi");
+}
+function makeImagesTabbable(root = document) {
+    console.log("tabs");
+    const images = root.querySelectorAll('img');
+    images.forEach((img) => {
+        if (!img.hasAttribute('tabindex')) {
+            img.setAttribute('tabindex', '0');
+        }
+    });
+}
+document.addEventListener('focusin', (event) => {
+    const target = event.target;
+    if (target.tagName === 'IMG') {
+        const img = target;
+        const src = img.currentSrc;
+        if (src) {
+            console.log('Focused image src:', src);
+            activeImg = src;
+            console.log(activeImg);
         }
     }
 });
@@ -14,22 +28,35 @@ document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.key === "\\") {
         e.preventDefault();
         // https://developer.chrome.com/docs/extensions/reference/api/runtime
+        console.log(activeImg);
         chrome.runtime.sendMessage({ message: 'get-image-description', payload: activeImg }, (response) => {
-            // save activeImg response
-            console.log("sent");
             activeImg = null;
             console.log('received user data', response);
         });
     }
 });
-function extractImgSrcFromHTMLCollection(collection) {
-    const elements = Array.from(collection);
-    for (const element of elements) {
-        if (element.getElementsByTagName("img").length > 0) {
-            return (element.getElementsByTagName("img")[0].currentSrc);
-        }
-        ;
+const observer = new MutationObserver(function (mutations) {
+    for (const mutation of mutations) {
+        mutation.addedNodes.forEach((node) => {
+            if (node.nodeType === Node.ELEMENT_NODE) {
+                const element = node;
+                if (element.tagName === 'IMG') {
+                    element.setAttribute('tabindex', '0');
+                }
+                else {
+                    makeImagesTabbable(element);
+                }
+            }
+        });
     }
-    return null;
+});
+observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+});
+function isImage(element) {
+    return element instanceof HTMLImageElement;
 }
+makeImagesTabbable();
+hi();
 //# sourceMappingURL=script.js.map
