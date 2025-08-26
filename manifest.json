@@ -1,5 +1,5 @@
 {
-    "name": "AEye Describe",
+    "name": "A-Eye",
     "description": "Image Describer",
     "version": "1.0",
     "manifest_version": 3,
@@ -19,6 +19,7 @@
     "content_scripts": [
         {
         "js": ["extension/dist/js/scripts/script.js"],
+        "css": ["extension/dist/css/style.css"],
         "matches": ["<all_urls>"],
         "run_at": "document_idle"
         }

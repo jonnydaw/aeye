@@ -30,7 +30,7 @@ document.addEventListener('keydown', (e: KeyboardEvent) => {
     if(e.ctrlKey && e.key === "\\"){
         e.preventDefault();
         // https://developer.chrome.com/docs/extensions/reference/api/runtime
-        console.log(activeImg);
+        console.log('Active img ' + activeImg);
         chrome.runtime.sendMessage({message: 'get-image-description', payload: activeImg}, (response) => {
             activeImg = null;
             console.log('received user data', response);
